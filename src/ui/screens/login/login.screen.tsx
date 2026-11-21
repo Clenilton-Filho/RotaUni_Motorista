@@ -29,8 +29,11 @@ export default function LoginScreen() {
     setError('');
 
     try {
-      const authenticated = await login(normalizedEmail, password);
-      if (!authenticated) setError('Email ou senha inválidos.');
+      const result = await login(normalizedEmail, password);
+      if (result === 'invalid-credentials') setError('Email ou senha inválidos.');
+      if (result === 'missing-profile') {
+        setError('Não encontramos o perfil desta conta. O cadastro pode ter ficado incompleto.');
+      }
     } catch {
       setError('Não foi possível entrar. Tente novamente.');
     } finally {

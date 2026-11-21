@@ -21,13 +21,16 @@ import { vehicleRepository } from '@/core/services/vehicle/local-vehicle.reposit
 // O que as telas enxergam da conta: sem hash e salt da senha.
 export type CurrentAccount = Pick<UserAccount, 'id' | 'email' | 'createdAt'>;
 
+// 'missing-profile' = senha certa, mas a conta não tem perfil salvo (cadastro antigo incompleto).
+export type LoginResult = 'success' | 'invalid-credentials' | 'missing-profile';
+
 type AppState = {
   currentAccount: CurrentAccount | null;
   currentUser: UserProfile | null;
   currentVehicle: Vehicle | null;
   isHydrated: boolean;
   register: (account: CreateAccountInput, profile: CreateUserInput, vehicle: VehicleInput) => Promise<void>;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<LoginResult>;
   updateVehicle: (vehicle: VehicleInput) => Promise<void>;
   logout: () => Promise<void>;
   resetLocalData: () => Promise<void>;
@@ -102,18 +105,18 @@ export function AppProvider({ children }: PropsWithChildren) {
     setCurrentVehicle(vehicle);
   }
 
-  async function login(email: string, password: string) {
+  async function login(email: string, password: string): Promise<LoginResult> {
     const account = await userAccountRepository.verifyCredentials(email, password);
-    if (!account) return false;
+    if (!account) return 'invalid-credentials';
     const profile = await userRepository.getByUserId(account.id);
-    if (!profile) return false;
+    if (!profile) return 'missing-profile';
     const vehicle = await vehicleRepository.getByUserId(account.id);
 
     await sessionRepository.saveSession({ accountId: account.id });
     setCurrentAccount(toCurrentAccount(account));
     setCurrentUser(profile);
     setCurrentVehicle(vehicle);
-    return true;
+    return 'success';
   }
 
   async function updateVehicle(vehicleInput: VehicleInput) {

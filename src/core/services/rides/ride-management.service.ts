@@ -53,7 +53,9 @@ export async function createRide({ driver, vehicle, origin, input }: CreateRideP
     throw new RideRuleError(`O número de vagas deve ficar entre 1 e ${vehicle.seats}.`);
   }
   if (!isValidPrice(input.price)) {
-    throw new RideRuleError(`O valor deve ser maior que zero e no máximo R$ ${MAX_RIDE_PRICE}.`);
+    throw new RideRuleError(
+      `O valor deve ser maior que zero, no máximo R$ ${MAX_RIDE_PRICE} e com até 2 casas decimais.`,
+    );
   }
 
   const driverRides = await ridesRepository.listByDriver(driver.id);

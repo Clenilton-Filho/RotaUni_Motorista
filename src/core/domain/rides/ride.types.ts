@@ -48,7 +48,13 @@ export function isValidDepartureTime(value: string) {
 }
 
 export function isValidPrice(price: number | null) {
-  return price === null || (Number.isFinite(price) && price > 0 && price <= MAX_RIDE_PRICE);
+  return price === null || (Number.isFinite(price) && price > 0 && price <= MAX_RIDE_PRICE && hasAtMostTwoDecimals(price));
+}
+
+// Valor em centavos inteiros (ex.: 7,50). A tolerância cobre erros de ponto flutuante como 7.1 * 100.
+function hasAtMostTwoDecimals(value: number) {
+  const cents = value * 100;
+  return Math.abs(cents - Math.round(cents)) < 1e-6;
 }
 
 export function getRideEarnings(ride: Ride) {

@@ -27,7 +27,7 @@ Iguais às do app do passageiro:
 - Destino obrigatório, até 60 caracteres.
 - Horário de saída no formato `HH:MM` (00:00–23:59).
 - Vagas: de 1 até o número de lugares do veículo.
-- Preço: gratuita (`price = null`) ou valor maior que zero e até R$ 100 por passageiro.
+- Preço: gratuita (`price = null`) ou valor maior que zero e até R$ 100 por passageiro, com no máximo 2 casas decimais (centavos).
 - Não pode haver duas caronas ativas (agendada ou em andamento) do mesmo motorista no mesmo horário.
 - Dois toques rápidos em "Publicar" não criam duas caronas.
 

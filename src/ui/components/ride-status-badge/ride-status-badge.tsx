@@ -4,7 +4,7 @@ import { ThemedText } from '@/ui/components/themed-text/themed-text';
 
 import { statusStyles, styles } from './ride-status-badge.styles';
 
-const statusLabel: Record<RideStatus, string> = {
+export const rideStatusLabel: Record<RideStatus, string> = {
   scheduled: 'Agendada',
   'in-progress': 'Em andamento',
   completed: 'Finalizada',
@@ -12,5 +12,5 @@ const statusLabel: Record<RideStatus, string> = {
 };
 
 export function RideStatusBadge({ status }: { status: RideStatus }) {
-  return <ThemedText style={[styles.badge, statusStyles[status]]}>{statusLabel[status]}</ThemedText>;
+  return <ThemedText style={[styles.badge, statusStyles[status]]}>{rideStatusLabel[status]}</ThemedText>;
 }
