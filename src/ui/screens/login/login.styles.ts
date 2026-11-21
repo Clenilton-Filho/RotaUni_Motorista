@@ -1,10 +1,12 @@
 import { StyleSheet } from 'react-native';
 
-import { Palette } from '@/ui/theme/theme';
+import { colors, spacing, typography, ui } from '@/ui/theme/theme';
 
 export const styles = StyleSheet.create({
-  header: { gap: 12, marginTop: 24 },
-  brand: { color: Palette.primary, fontWeight: '700' },
-  form: { gap: 20 },
-  error: { color: Palette.danger },
+  header: { gap: spacing.sm, marginTop: spacing.lg },
+  brand: { color: colors.primary, fontWeight: '700', letterSpacing: 0.5 },
+  description: { ...typography.body, color: colors.textMuted },
+  form: { ...ui.card, gap: spacing.md, padding: spacing.lg, marginBottom: 0 },
+  link: { alignSelf: 'center' },
+  error: { color: colors.danger, fontWeight: '600' },
 });

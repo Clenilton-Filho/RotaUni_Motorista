@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import type { Ride } from '@/core/domain/rides/ride.types';
 import {
@@ -28,6 +28,9 @@ export function useRideActions(rideId: string | undefined) {
   const { currentUser } = useAppState();
   const [pendingAction, setPendingAction] = useState<RideAction | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Trava síncrona: o estado só atualiza no próximo render, então dois toques
+  // no mesmo instante passariam pela checagem de `pendingAction`.
+  const isRunningRef = useRef(false);
 
   async function run(action: RideAction, operation: (driverId: string, id: string) => Promise<Ride>) {
     if (!currentUser || !rideId) {
@@ -35,7 +38,8 @@ export function useRideActions(rideId: string | undefined) {
       return null;
     }
 
-    if (pendingAction) return null;
+    if (isRunningRef.current) return null;
+    isRunningRef.current = true;
 
     setPendingAction(action);
     setError(null);
@@ -46,6 +50,7 @@ export function useRideActions(rideId: string | undefined) {
       setError(actionError instanceof RideRuleError ? actionError.message : fallbackMessages[action]);
       return null;
     } finally {
+      isRunningRef.current = false;
       setPendingAction(null);
     }
   }

@@ -6,10 +6,6 @@ export function formatCurrency(value: number) {
   return `R$ ${value.toFixed(2).replace('.', ',')}`;
 }
 
-export function formatRating(rating: number | null) {
-  return rating === null ? 'Novo' : rating.toFixed(1);
-}
-
 export function formatDateTime(isoDate: string) {
   const date = new Date(isoDate);
   const pad = (value: number) => String(value).padStart(2, '0');

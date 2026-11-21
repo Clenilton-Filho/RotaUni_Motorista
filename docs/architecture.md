@@ -82,7 +82,7 @@ app  ──→  ui  ──→  core
 | Onde/como os dados são salvos | `core/services/.../local-*.repository.ts` |
 | O layout de uma tela | `ui/screens/<tela>/<tela>.screen.tsx` |
 | Cores, espaçamentos, fontes de uma tela | `ui/screens/<tela>/<tela>.styles.ts` |
-| Cores da marca | `ui/theme/theme.ts` (`Palette`) |
+| Cores da marca, espaçamentos, cantos, sombra e peças prontas | `ui/theme/theme.ts` (`colors`, `spacing`, `radius`, `typography`, `shadow`, `ui`) |
 | Uma rota nova | crie a tela em `ui/screens/` e um arquivo de 1 linha em `app/` |
 
 ## Código compartilhado com o app do passageiro
@@ -93,7 +93,8 @@ Copiados sem alteração de comportamento. Mudaram só de pasta, e devem continu
 - `core/services/auth/*` (hash de senha, sessão, conta). `normalizeEmail`/`isValidEmail` agora ficam em `core/domain/auth/email.ts` e são reexportados pelo `password.service`.
 - `core/services/user/user.repository.ts`
 - `core/domain/auth/*`, `core/domain/user/user.types.ts`
-- `ui/theme/theme.ts`, `ui/components/themed-text`, `ui/components/themed-view`, `ui/theme/use-theme.ts`
+- `ui/components/themed-text`, `ui/components/themed-view`, `ui/theme/use-theme.ts`
+- `ui/theme/theme.ts`: os nomes antigos (`Colors`, `Palette`, `Fonts`, `Spacing`) continuam existindo, mas agora apontam para o tema visual do motorista (azul `#1E4FD8` + laranja `#FF7A1A`, só modo claro). Ao alinhar o visual dos dois apps, copiar este arquivo para o passageiro.
 
 As chaves de armazenamento usam o prefixo `rotauni-driver.` (o passageiro usa `rotauni.`).
 

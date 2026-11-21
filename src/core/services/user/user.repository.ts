@@ -6,6 +6,7 @@ export interface UserRepository {
   getByUserId(userId: string): Promise<UserProfile | null>;
   saveProfile(profile: UserProfile): Promise<void>;
   updateProfile(profile: UserProfile): Promise<void>;
+  deleteProfile(userId: string): Promise<void>;
   clearAll(): Promise<void>;
 }
 
@@ -27,6 +28,14 @@ export const userRepository: UserRepository = {
       profiles.map((storedProfile) =>
         storedProfile.userId === profile.userId ? profile : storedProfile,
       ),
+    );
+  },
+
+  async deleteProfile(userId) {
+    const profiles = (await asyncStorageAdapter.get<UserProfile[]>(StorageKeys.profiles)) ?? [];
+    await asyncStorageAdapter.set(
+      StorageKeys.profiles,
+      profiles.filter((profile) => profile.userId !== userId),
     );
   },
 

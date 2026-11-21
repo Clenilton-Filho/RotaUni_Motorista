@@ -12,8 +12,8 @@ type InfoRowProps = {
 export function InfoRow({ label, value }: InfoRowProps) {
   return (
     <View style={styles.row}>
-      <ThemedText type="smallBold">{label}</ThemedText>
-      <ThemedText>{value}</ThemedText>
+      <ThemedText style={styles.label}>{label}</ThemedText>
+      <ThemedText style={styles.value}>{value}</ThemedText>
     </View>
   );
 }

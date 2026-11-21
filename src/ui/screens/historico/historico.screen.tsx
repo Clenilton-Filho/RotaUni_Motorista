@@ -31,7 +31,9 @@ export default function HistoryScreen() {
       ) : error ? (
         <ThemedText style={styles.error}>{error}</ThemedText>
       ) : completedRides.length === 0 ? (
-        <ThemedText themeColor="textSecondary">Você ainda não finalizou nenhuma carona.</ThemedText>
+        <View style={styles.empty}>
+          <ThemedText style={styles.emptyText}>Você ainda não finalizou nenhuma carona.</ThemedText>
+        </View>
       ) : (
         <View style={styles.list}>
           {completedRides.map((ride) => (

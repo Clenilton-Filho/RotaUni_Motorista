@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { View } from 'react-native';
 
+import { ValidationError } from '@/core/domain/auth/registration';
 import { validateVehicleInput, type VehicleInput } from '@/core/domain/vehicle/vehicle.types';
 import { useAppState } from '@/core/state/app-provider';
 
@@ -37,8 +38,8 @@ export default function VehicleScreen() {
     try {
       await updateVehicle(vehicle);
       router.back();
-    } catch {
-      setError('Não foi possível salvar o veículo.');
+    } catch (saveError) {
+      setError(saveError instanceof ValidationError ? saveError.message : 'Não foi possível salvar o veículo.');
     } finally {
       setIsSaving(false);
     }
@@ -48,12 +49,14 @@ export default function VehicleScreen() {
     <Screen showBack>
       <View style={styles.header}>
         <ThemedText type="subtitle">Veículo</ThemedText>
-        <ThemedText themeColor="textSecondary">
+        <ThemedText style={styles.description}>
           As alterações valem para as próximas caronas. Caronas já publicadas não mudam.
         </ThemedText>
       </View>
 
-      <VehicleFormFields value={vehicle} onChange={setVehicle} />
+      <View style={styles.card}>
+        <VehicleFormFields value={vehicle} onChange={setVehicle} />
+      </View>
 
       {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
 

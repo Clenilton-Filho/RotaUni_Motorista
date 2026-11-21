@@ -36,10 +36,8 @@ export function ConfirmDialog({
       <Pressable style={styles.backdrop} onPress={onCancel}>
         <Pressable onPress={() => {}}>
           <ThemedView style={styles.dialog}>
-            <ThemedText type="smallBold" style={styles.title}>
-              {title}
-            </ThemedText>
-            <ThemedText themeColor="textSecondary">{message}</ThemedText>
+            <ThemedText style={styles.title}>{title}</ThemedText>
+            <ThemedText style={styles.message}>{message}</ThemedText>
             <View style={styles.actions}>
               <AppButton compact variant="outline" label={cancelLabel} onPress={onCancel} />
               <AppButton

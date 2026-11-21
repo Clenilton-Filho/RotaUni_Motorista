@@ -1,15 +1,26 @@
 import { StyleSheet } from 'react-native';
 
-import { Palette } from '@/ui/theme/theme';
+import { colors, radius, spacing, typography, ui } from '@/ui/theme/theme';
 
 export const styles = StyleSheet.create({
-  header: { gap: 8 },
-  form: { gap: 20 },
-  priceSection: { gap: 12 },
-  toggle: { flexDirection: 'row', gap: 10 },
+  header: { gap: spacing.sm },
+  description: { ...typography.body, color: colors.textMuted },
+  form: { gap: spacing.lg },
+  card: { ...ui.card, gap: spacing.md, padding: spacing.lg, marginBottom: 0 },
+  priceSection: { gap: spacing.md },
+  priceLabel: { ...ui.inputLabel, marginBottom: 0 },
+  toggle: { flexDirection: 'row', gap: spacing.sm },
   toggleOption: { flex: 1 },
-  toggleInner: { alignItems: 'center', padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'transparent' },
-  toggleSelected: { borderColor: Palette.primary },
-  toggleSelectedText: { color: Palette.primary },
-  error: { color: Palette.danger },
+  toggleInner: {
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    borderRadius: radius.md,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+  },
+  toggleSelected: { borderColor: colors.primary, backgroundColor: colors.primarySoft },
+  toggleText: { color: colors.textMuted },
+  toggleSelectedText: { color: colors.primary },
+  error: { color: colors.danger, fontWeight: '600' },
 });

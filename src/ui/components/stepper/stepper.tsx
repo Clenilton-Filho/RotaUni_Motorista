@@ -17,7 +17,7 @@ type StepperProps = {
 export function Stepper({ label, value, min, max, onChange, hint }: StepperProps) {
   return (
     <View style={styles.field}>
-      <ThemedText type="smallBold">{label}</ThemedText>
+      <ThemedText style={styles.label}>{label}</ThemedText>
       <View style={styles.row}>
         <StepButton symbol="−" disabled={value <= min} onPress={() => onChange(value - 1)} label="Diminuir" />
         <ThemedView type="backgroundElement" style={styles.value}>
@@ -45,7 +45,7 @@ function StepButton({ symbol, label, disabled, onPress }: StepButtonProps) {
       accessibilityLabel={label}
       disabled={disabled}
       onPress={onPress}
-      style={[styles.button, disabled && styles.disabled]}>
+      style={({ pressed }) => [styles.button, pressed && styles.pressed, disabled && styles.disabled]}>
       <ThemedText style={styles.buttonText}>{symbol}</ThemedText>
     </Pressable>
   );

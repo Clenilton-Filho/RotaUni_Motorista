@@ -18,41 +18,48 @@ type RideCardProps = {
 export function RideCard({ ride, footer, onPress }: RideCardProps) {
   const remainingSeats = getRemainingSeats(ride);
 
-  const card = (
-    <ThemedView type="backgroundElement" style={styles.card}>
+  const content = (
+    <>
       <View style={styles.header}>
         <View style={styles.title}>
-          <ThemedText type="smallBold">
+          <ThemedText style={styles.route}>
             {ride.origin} → {ride.destination}
           </ThemedText>
-          <ThemedText themeColor="textSecondary">Saída às {ride.departureTime}</ThemedText>
+          <ThemedText style={styles.time}>Saída às {ride.departureTime}</ThemedText>
         </View>
         <RideStatusBadge status={ride.status} />
       </View>
 
+      <View style={styles.divider} />
+
       <View style={styles.details}>
-        <ThemedText>
-          Passageiros: {ride.confirmedPassengers}/{ride.totalCapacity}
+        <ThemedText style={styles.passengers}>
+          {ride.confirmedPassengers}/{ride.totalCapacity} passageiros
           {ride.status === 'scheduled' && remainingSeats > 0
             ? ` • ${pluralize(remainingSeats, 'vaga livre', 'vagas livres')}`
             : ''}
         </ThemedText>
-        <ThemedText type="smallBold">{formatPrice(ride.price)}</ThemedText>
+        <ThemedText style={styles.price}>{formatPrice(ride.price)}</ThemedText>
       </View>
 
-      {footer ? (
-        <ThemedText type="small" themeColor="textSecondary">
-          {footer}
-        </ThemedText>
-      ) : null}
-    </ThemedView>
+      {footer ? <ThemedText style={styles.footer}>{footer}</ThemedText> : null}
+    </>
   );
 
-  if (!onPress) return card;
+  if (!onPress) {
+    return (
+      <ThemedView type="backgroundElement" style={styles.card}>
+        {content}
+      </ThemedView>
+    );
+  }
 
   return (
-    <Pressable accessibilityRole="button" onPress={onPress}>
-      {card}
+    <Pressable
+      accessibilityRole="button"
+      onPress={onPress}
+      style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
+      {content}
     </Pressable>
   );
 }

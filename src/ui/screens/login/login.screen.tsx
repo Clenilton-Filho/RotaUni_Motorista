@@ -43,7 +43,7 @@ export default function LoginScreen() {
       <View style={styles.header}>
         <ThemedText style={styles.brand}>RotaUni Motorista</ThemedText>
         <ThemedText type="title">Entrar</ThemedText>
-        <ThemedText themeColor="textSecondary">
+        <ThemedText style={styles.description}>
           Acesse sua conta para oferecer caronas aos universitários.
         </ThemedText>
       </View>
@@ -66,7 +66,7 @@ export default function LoginScreen() {
         {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
         <AppButton label="Entrar" loadingLabel="Entrando..." isLoading={isSubmitting} onPress={handleLogin} />
         <Link href="/cadastro" asChild>
-          <Pressable>
+          <Pressable style={styles.link}>
             <ThemedText type="linkPrimary">Quero ser motorista: criar conta</ThemedText>
           </Pressable>
         </Link>

@@ -1,14 +1,10 @@
-/**
- * Learn more about light and dark modes:
- * https://docs.expo.dev/guides/color-schemes/
- */
-
 import { Colors } from '@/ui/theme/theme';
-import { useColorScheme } from '@/ui/theme/use-color-scheme';
 
+/**
+ * Cores dos componentes temáticos (ThemedText, ThemedView).
+ * O design do app só tem modo claro; se um dia houver modo escuro,
+ * é aqui que se volta a ler o `useColorScheme` do React Native.
+ */
 export function useTheme() {
-  const scheme = useColorScheme();
-  const theme = scheme === 'unspecified' ? 'light' : scheme;
-
-  return Colors[theme];
+  return Colors.light;
 }

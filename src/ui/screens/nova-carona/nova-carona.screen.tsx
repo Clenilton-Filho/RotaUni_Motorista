@@ -11,7 +11,6 @@ import { FormField } from '@/ui/components/form-field/form-field';
 import { Screen } from '@/ui/components/screen/screen';
 import { Stepper } from '@/ui/components/stepper/stepper';
 import { ThemedText } from '@/ui/components/themed-text/themed-text';
-import { ThemedView } from '@/ui/components/themed-view/themed-view';
 import { maskTime, parsePrice } from '@/ui/utils/format';
 
 import { styles } from './nova-carona.styles';
@@ -45,40 +44,42 @@ export default function NewRideScreen() {
     <Screen showBack>
       <View style={styles.header}>
         <ThemedText type="subtitle">Oferecer carona</ThemedText>
-        <ThemedText themeColor="textSecondary">
+        <ThemedText style={styles.description}>
           Saindo de <ThemedText type="smallBold">{currentUser.campus}</ThemedText>
           {currentVehicle ? ` no seu ${currentVehicle.model} ${currentVehicle.color.toLowerCase()}.` : '.'}
         </ThemedText>
       </View>
 
       <View style={styles.form}>
-        <FormField
-          label="Destino"
-          value={destination}
-          onChangeText={setDestination}
-          placeholder="Bairro ou ponto de referência"
-          autoCapitalize="words"
-          maxLength={MAX_DESTINATION_LENGTH}
-        />
-        <FormField
-          label="Horário de saída"
-          value={departureTime}
-          onChangeText={(value) => setDepartureTime(maskTime(value))}
-          placeholder="18:00"
-          keyboardType="number-pad"
-          maxLength={5}
-        />
-        <Stepper
-          label="Vagas para passageiros"
-          value={capacity}
-          min={1}
-          max={maxSeats}
-          onChange={setCapacity}
-          hint={`Seu veículo comporta até ${maxSeats}.`}
-        />
+        <View style={styles.card}>
+          <FormField
+            label="Destino"
+            value={destination}
+            onChangeText={setDestination}
+            placeholder="Bairro ou ponto de referência"
+            autoCapitalize="words"
+            maxLength={MAX_DESTINATION_LENGTH}
+          />
+          <FormField
+            label="Horário de saída"
+            value={departureTime}
+            onChangeText={(value) => setDepartureTime(maskTime(value))}
+            placeholder="18:00"
+            keyboardType="number-pad"
+            maxLength={5}
+          />
+          <Stepper
+            label="Vagas para passageiros"
+            value={capacity}
+            min={1}
+            max={maxSeats}
+            onChange={setCapacity}
+            hint={`Seu veículo comporta até ${maxSeats}.`}
+          />
+        </View>
 
-        <View style={styles.priceSection}>
-          <ThemedText type="smallBold">Valor por passageiro</ThemedText>
+        <View style={[styles.card, styles.priceSection]}>
+          <ThemedText style={styles.priceLabel}>Valor por passageiro</ThemedText>
           <View style={styles.toggle}>
             <ToggleOption label="Paga" selected={!isFree} onPress={() => setIsFree(false)} />
             <ToggleOption label="Gratuita" selected={isFree} onPress={() => setIsFree(true)} />
@@ -110,13 +111,11 @@ function ToggleOption({ label, selected, onPress }: { label: string; selected: b
       accessibilityState={{ selected }}
       onPress={onPress}
       style={styles.toggleOption}>
-      <ThemedView
-        type={selected ? 'backgroundSelected' : 'backgroundElement'}
-        style={[styles.toggleInner, selected && styles.toggleSelected]}>
-        <ThemedText type="smallBold" style={selected && styles.toggleSelectedText}>
+      <View style={[styles.toggleInner, selected && styles.toggleSelected]}>
+        <ThemedText type="smallBold" style={[styles.toggleText, selected && styles.toggleSelectedText]}>
           {label}
         </ThemedText>
-      </ThemedView>
+      </View>
     </Pressable>
   );
 }

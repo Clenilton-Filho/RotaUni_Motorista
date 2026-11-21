@@ -78,7 +78,7 @@ export default function RideDetailsScreen() {
         <ThemedText type="subtitle" style={styles.title}>
           {ride.origin} → {ride.destination}
         </ThemedText>
-        <ThemedText themeColor="textSecondary">Saída às {ride.departureTime}</ThemedText>
+        <ThemedText style={styles.time}>Saída às {ride.departureTime}</ThemedText>
       </View>
 
       <ThemedView type="backgroundElement" style={styles.card}>
@@ -102,13 +102,13 @@ export default function RideDetailsScreen() {
       </ThemedView>
 
       <View style={styles.section}>
-        <ThemedText type="smallBold" style={styles.sectionTitle}>
+        <ThemedText style={styles.sectionTitle}>
           {isScheduled
             ? `Solicitações${pendingRequests.length > 0 ? ` (${pendingRequests.length} aguardando)` : ''}`
             : 'Passageiros'}
         </ThemedText>
         {visibleRequests.length === 0 ? (
-          <ThemedText themeColor="textSecondary">
+          <ThemedText style={styles.emptyText}>
             {isScheduled ? 'Nenhuma solicitação por enquanto.' : 'Nenhum passageiro nesta carona.'}
           </ThemedText>
         ) : (
@@ -131,7 +131,7 @@ export default function RideDetailsScreen() {
       {isScheduled ? (
         <View style={styles.actions}>
           {pendingRequests.length > 0 ? (
-            <ThemedText type="small" themeColor="textSecondary">
+            <ThemedText style={styles.hint}>
               Ao iniciar, as solicitações ainda sem resposta serão recusadas.
             </ThemedText>
           ) : null}

@@ -31,7 +31,7 @@ export default function BoasVindasScreen() {
           <ThemedText type="subtitle" style={styles.title}>
             Seu caminho pode levar alguém
           </ThemedText>
-          <ThemedText themeColor="textSecondary" style={styles.subtitle}>
+          <ThemedText style={styles.subtitle}>
             Ofereça caronas para universitários que vão para o mesmo lugar que você.
           </ThemedText>
         </View>
@@ -39,12 +39,12 @@ export default function BoasVindasScreen() {
         <View style={styles.benefits}>
           {benefits.map((benefit) => (
             <ThemedView key={benefit.title} type="backgroundElement" style={styles.benefit}>
-              <ThemedText style={styles.benefitIcon}>{benefit.icon}</ThemedText>
+              <View style={styles.benefitIconCircle}>
+                <ThemedText style={styles.benefitIcon}>{benefit.icon}</ThemedText>
+              </View>
               <View style={styles.benefitText}>
-                <ThemedText type="smallBold">{benefit.title}</ThemedText>
-                <ThemedText type="small" themeColor="textSecondary">
-                  {benefit.description}
-                </ThemedText>
+                <ThemedText style={styles.benefitTitle}>{benefit.title}</ThemedText>
+                <ThemedText style={styles.benefitDescription}>{benefit.description}</ThemedText>
               </View>
             </ThemedView>
           ))}

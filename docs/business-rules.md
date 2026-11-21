@@ -10,6 +10,8 @@ Iguais às do app do passageiro:
 - Senha com no mínimo 8 caracteres, nunca salva em texto puro: salt aleatório de 16 bytes + SHA-256 iterado (`PASSWORD_ITERATIONS`).
 - Conta, sessão e perfil são entidades separadas.
 - Apenas uma sessão local ativa por vez.
+- Ao concluir o cadastro, o motorista já entra na conta (não precisa fazer login de novo).
+- As validações de cadastro e de veículo ficam no `core` (`domain/auth/registration.ts`, `domain/vehicle/vehicle.types.ts`) e são aplicadas pelo `AppProvider`, não só pelas telas.
 
 ## Veículo
 
@@ -62,4 +64,4 @@ Agendada ──iniciar──→ Em andamento ──finalizar──→ Finalizada
 | Sair | apaga | mantém | mantém | mantém | mantém |
 | Resetar (desenvolvimento) | apaga | apaga | apaga | apaga | apaga |
 
-Não use o reset de desenvolvimento como implementação do logout.
+Não use o reset de desenvolvimento como implementação do logout. O botão de reset só aparece em builds de desenvolvimento (`__DEV__`).

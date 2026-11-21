@@ -2,7 +2,7 @@ import { TextInput, View, type TextInputProps } from 'react-native';
 
 import { ThemedText } from '@/ui/components/themed-text/themed-text';
 
-import { styles } from './form-field.styles';
+import { placeholderColor, styles } from './form-field.styles';
 
 type FormFieldProps = Pick<
   TextInputProps,
@@ -15,15 +15,15 @@ type FormFieldProps = Pick<
 export function FormField({ label, hint, autoCapitalize = 'none', ...inputProps }: FormFieldProps) {
   return (
     <View style={styles.field}>
-      <ThemedText type="smallBold">{label}</ThemedText>
+      <ThemedText style={styles.label}>{label}</ThemedText>
       <TextInput
         {...inputProps}
         autoCapitalize={autoCapitalize}
-        placeholderTextColor="#737373"
+        placeholderTextColor={placeholderColor}
         style={styles.input}
       />
       {hint ? (
-        <ThemedText type="small" themeColor="textSecondary">
+        <ThemedText type="small" themeColor="textSecondary" style={styles.hint}>
           {hint}
         </ThemedText>
       ) : null}

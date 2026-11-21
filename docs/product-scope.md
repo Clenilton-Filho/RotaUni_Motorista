@@ -20,10 +20,10 @@ Este app permite que um motorista universitário:
 ## Fluxo do motorista
 
 ```text
-Cadastro (dados + veículo)
-  ↓
-Login
-  ↓
+Cadastro (dados + veículo) ──→ já entra na conta
+  ↓                               │
+Login (próximas vezes)            │
+  ↓  ←────────────────────────────┘
 Home (resumo + minhas caronas)
   ↓
 Oferecer carona

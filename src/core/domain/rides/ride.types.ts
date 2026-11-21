@@ -32,21 +32,11 @@ export type Ride = {
 
 export type CreateRideInput = Pick<Ride, 'destination' | 'departureTime' | 'totalCapacity' | 'price'>;
 
-export type RideCapacityStatus = 'available' | 'almost-full' | 'full';
-
 export const MAX_DESTINATION_LENGTH = 60;
 export const MAX_RIDE_PRICE = 100;
 
 export function getRemainingSeats(ride: Ride) {
   return Math.max(ride.totalCapacity - ride.confirmedPassengers, 0);
-}
-
-export function getRideCapacityStatus(ride: Ride): RideCapacityStatus {
-  const remainingSeats = getRemainingSeats(ride);
-
-  if (remainingSeats === 0) return 'full';
-  if (remainingSeats === 1) return 'almost-full';
-  return 'available';
 }
 
 export function isActiveRide(ride: Ride) {

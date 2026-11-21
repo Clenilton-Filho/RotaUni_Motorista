@@ -29,8 +29,9 @@ export function Screen({ children, showBack }: ScreenProps) {
             {showBack ? (
               <Pressable
                 accessibilityRole="button"
+                style={styles.back}
                 onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}>
-                <ThemedText type="linkPrimary">‹ Voltar</ThemedText>
+                <ThemedText style={styles.backText}>‹ Voltar</ThemedText>
               </Pressable>
             ) : null}
             {children}

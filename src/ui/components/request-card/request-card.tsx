@@ -30,6 +30,9 @@ export function RequestCard({ request, canRespond, canAccept, isBusy, onAccept, 
   return (
     <ThemedView type="backgroundElement" style={styles.card}>
       <View style={styles.header}>
+        <View style={styles.avatar}>
+          <ThemedText style={styles.avatarText}>{passenger.name.charAt(0).toUpperCase()}</ThemedText>
+        </View>
         <View style={styles.info}>
           <ThemedText type="smallBold">{passenger.name}</ThemedText>
           <ThemedText type="small" themeColor="textSecondary">
@@ -55,15 +58,7 @@ export function RequestCard({ request, canRespond, canAccept, isBusy, onAccept, 
           </View>
         </View>
       ) : (
-        <ThemedText
-          type="small"
-          style={[
-            status === 'accepted' && styles.accepted,
-            status === 'rejected' && styles.rejected,
-          ]}
-          themeColor="textSecondary">
-          {statusLabel[status]}
-        </ThemedText>
+        <ThemedText style={[styles.status, styles[status]]}>{statusLabel[status]}</ThemedText>
       )}
     </ThemedView>
   );

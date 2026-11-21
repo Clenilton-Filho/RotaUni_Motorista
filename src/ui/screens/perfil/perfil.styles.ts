@@ -1,10 +1,19 @@
 import { StyleSheet } from 'react-native';
 
-import { Palette } from '@/ui/theme/theme';
+import { colors, radius, spacing, typography, ui } from '@/ui/theme/theme';
 
 export const styles = StyleSheet.create({
-  card: { gap: 14, padding: 18, borderRadius: 10 },
-  sectionTitle: { fontSize: 18, lineHeight: 24 },
-  developmentSection: { gap: 10, padding: 16, borderRadius: 10, borderWidth: 1, borderColor: Palette.danger },
-  developmentTitle: { color: Palette.danger, fontWeight: '700' },
+  card: { ...ui.card, gap: spacing.md, padding: spacing.lg, marginBottom: 0 },
+  sectionTitle: { ...typography.subtitle },
+  developmentSection: {
+    gap: spacing.sm,
+    padding: spacing.md,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.danger,
+    backgroundColor: colors.dangerSoft,
+  },
+  developmentTitle: { color: colors.danger, fontWeight: '700' },
+  developmentText: { ...typography.caption },
+  error: { color: colors.danger, fontWeight: '600', textAlign: 'center' },
 });

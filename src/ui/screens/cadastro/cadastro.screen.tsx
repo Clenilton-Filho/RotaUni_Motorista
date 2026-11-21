@@ -1,10 +1,10 @@
-import { Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { testDriver } from '@/core/data/test-driver';
-import { isValidEmail, normalizeEmail } from '@/core/domain/auth/email';
-import { validateVehicleInput, type VehicleInput } from '@/core/domain/vehicle/vehicle.types';
+import { validateRegistration, ValidationError } from '@/core/domain/auth/registration';
+import type { VehicleInput } from '@/core/domain/vehicle/vehicle.types';
 import { useAppState } from '@/core/state/app-provider';
 
 import { AppButton } from '@/ui/components/app-button/app-button';
@@ -15,8 +15,13 @@ import { emptyVehicleInput, VehicleFormFields } from '@/ui/components/vehicle-fo
 
 import { styles } from './cadastro.styles';
 
+function getRegistrationErrorMessage(error: unknown) {
+  if (error instanceof ValidationError) return error.message;
+  if (error instanceof Error && error.message === 'EMAIL_ALREADY_EXISTS') return 'Este email já está cadastrado.';
+  return 'Não foi possível criar a conta.';
+}
+
 export default function CadastroScreen() {
-  const router = useRouter();
   const { register } = useAppState();
   const [name, setName] = useState('');
   const [university, setUniversity] = useState('');
@@ -40,35 +45,18 @@ export default function CadastroScreen() {
   }
 
   async function handleSubmit() {
-    const values = [name, university, campus].map((value) => value.trim());
-    const normalizedEmail = normalizeEmail(email);
-
-    if (values.some((value) => value.length === 0) || !normalizedEmail || !password || !passwordConfirmation) {
-      return setError('Preencha todos os seus dados.');
-    }
-    if (!isValidEmail(normalizedEmail)) return setError('Informe um email válido.');
-    if (password.length < 8) return setError('A senha deve ter pelo menos 8 caracteres.');
-    if (password !== passwordConfirmation) return setError('As senhas não conferem.');
-
-    const vehicleError = validateVehicleInput(vehicle);
-    if (vehicleError) return setError(vehicleError);
+    const profile = { name, university, campus };
+    const validationError = validateRegistration({ profile, email, password, passwordConfirmation, vehicle });
+    if (validationError) return setError(validationError);
 
     setIsSubmitting(true);
     setError('');
 
     try {
-      await register(
-        { email: normalizedEmail, password },
-        { name: values[0], university: values[1], campus: values[2] },
-        vehicle,
-      );
-      router.replace('/login');
+      // Ao concluir, a conta já fica logada e o guard leva para a home.
+      await register({ email, password }, profile, vehicle);
     } catch (registrationError) {
-      setError(
-        registrationError instanceof Error && registrationError.message === 'EMAIL_ALREADY_EXISTS'
-          ? 'Este email já está cadastrado.'
-          : 'Não foi possível criar a conta.',
-      );
+      setError(getRegistrationErrorMessage(registrationError));
     } finally {
       setIsSubmitting(false);
     }
@@ -79,7 +67,7 @@ export default function CadastroScreen() {
       <View style={styles.header}>
         <ThemedText style={styles.brand}>RotaUni Motorista</ThemedText>
         <ThemedText type="subtitle">Ofereça caronas</ThemedText>
-        <ThemedText themeColor="textSecondary">
+        <ThemedText style={styles.description}>
           Crie seu perfil de motorista e leve outros universitários pelo seu caminho.
         </ThemedText>
       </View>
@@ -89,56 +77,56 @@ export default function CadastroScreen() {
       ) : null}
 
       <View style={styles.form}>
-        <ThemedText type="smallBold" style={styles.sectionTitle}>
-          Seus dados
-        </ThemedText>
-        <FormField label="Nome" value={name} onChangeText={setName} placeholder="Seu nome" autoCapitalize="words" />
-        <FormField
-          label="Email"
-          value={email}
-          onChangeText={setEmail}
-          placeholder="seu@email.com"
-          keyboardType="email-address"
-        />
-        <FormField
-          label="Senha"
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Mínimo de 8 caracteres"
-          secureTextEntry
-        />
-        <FormField
-          label="Confirmar senha"
-          value={passwordConfirmation}
-          onChangeText={setPasswordConfirmation}
-          placeholder="Repita sua senha"
-          secureTextEntry
-        />
-        <FormField
-          label="Faculdade"
-          value={university}
-          onChangeText={setUniversity}
-          placeholder="Nome da faculdade"
-          autoCapitalize="words"
-        />
-        <FormField
-          label="Campus"
-          value={campus}
-          onChangeText={setCampus}
-          placeholder="De onde suas caronas saem"
-          autoCapitalize="words"
-        />
+        <View style={styles.section}>
+          <ThemedText style={styles.sectionTitle}>Seus dados</ThemedText>
+          <FormField label="Nome" value={name} onChangeText={setName} placeholder="Seu nome" autoCapitalize="words" />
+          <FormField
+            label="Email"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="seu@email.com"
+            keyboardType="email-address"
+          />
+          <FormField
+            label="Senha"
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Mínimo de 8 caracteres"
+            secureTextEntry
+          />
+          <FormField
+            label="Confirmar senha"
+            value={passwordConfirmation}
+            onChangeText={setPasswordConfirmation}
+            placeholder="Repita sua senha"
+            secureTextEntry
+          />
+          <FormField
+            label="Faculdade"
+            value={university}
+            onChangeText={setUniversity}
+            placeholder="Nome da faculdade"
+            autoCapitalize="words"
+          />
+          <FormField
+            label="Campus"
+            value={campus}
+            onChangeText={setCampus}
+            placeholder="De onde suas caronas saem"
+            autoCapitalize="words"
+          />
+        </View>
 
-        <ThemedText type="smallBold" style={styles.sectionTitle}>
-          Seu veículo
-        </ThemedText>
-        <VehicleFormFields value={vehicle} onChange={setVehicle} />
+        <View style={styles.section}>
+          <ThemedText style={styles.sectionTitle}>Seu veículo</ThemedText>
+          <VehicleFormFields value={vehicle} onChange={setVehicle} />
+        </View>
 
         {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
 
         <AppButton label="Criar conta" loadingLabel="Criando..." isLoading={isSubmitting} onPress={handleSubmit} />
         <Link href="/login" asChild>
-          <Pressable>
+          <Pressable style={styles.link}>
             <ThemedText type="linkPrimary">Já tenho uma conta</ThemedText>
           </Pressable>
         </Link>

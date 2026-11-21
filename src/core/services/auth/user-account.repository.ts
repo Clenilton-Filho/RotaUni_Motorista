@@ -16,6 +16,7 @@ export interface UserAccountRepository {
   getById(id: string): Promise<UserAccount | null>;
   verifyCredentials(email: string, password: string): Promise<UserAccount | null>;
   emailExists(email: string): Promise<boolean>;
+  deleteAccount(id: string): Promise<void>;
   clearAll(): Promise<void>;
 }
 
@@ -65,6 +66,14 @@ export class LocalUserAccountRepository implements UserAccountRepository {
 
   async emailExists(email: string) {
     return (await this.findByEmail(email)) !== null;
+  }
+
+  async deleteAccount(id: string) {
+    const accounts = await this.getAccounts();
+    await asyncStorageAdapter.set(
+      StorageKeys.accounts,
+      accounts.filter((account) => account.id !== id),
+    );
   }
 
   async clearAll() {

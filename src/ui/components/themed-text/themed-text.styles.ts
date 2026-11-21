@@ -1,12 +1,12 @@
 import { Platform, StyleSheet } from 'react-native';
 
-import { Fonts } from '@/ui/theme/theme';
+import { colors, Fonts } from '@/ui/theme/theme';
 
 export const styles = StyleSheet.create({
   small: {
-    fontSize: 14,
-    lineHeight: 20,
-    fontWeight: 500,
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: 400,
   },
   smallBold: {
     fontSize: 14,
@@ -14,19 +14,21 @@ export const styles = StyleSheet.create({
     fontWeight: 700,
   },
   default: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: 500,
+    fontSize: 15,
+    lineHeight: 22,
+    fontWeight: 400,
   },
+  // Título grande de tela de entrada (login).
   title: {
-    fontSize: 48,
-    fontWeight: 600,
-    lineHeight: 52,
-  },
-  subtitle: {
     fontSize: 32,
-    lineHeight: 44,
-    fontWeight: 600,
+    lineHeight: 40,
+    fontWeight: 700,
+  },
+  // Título de cada tela (Histórico, Perfil...).
+  subtitle: {
+    fontSize: 24,
+    lineHeight: 32,
+    fontWeight: 700,
   },
   link: {
     lineHeight: 30,
@@ -34,8 +36,9 @@ export const styles = StyleSheet.create({
   },
   linkPrimary: {
     lineHeight: 30,
-    fontSize: 14,
-    color: '#3c87f7',
+    fontSize: 15,
+    fontWeight: 700,
+    color: colors.primary,
   },
   code: {
     fontFamily: Fonts.mono,

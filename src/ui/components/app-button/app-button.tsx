@@ -2,7 +2,7 @@ import { Pressable } from 'react-native';
 
 import { ThemedText } from '@/ui/components/themed-text/themed-text';
 
-import { styles, textStyles } from './app-button.styles';
+import { pressedStyles, styles, textStyles } from './app-button.styles';
 
 type AppButtonProps = {
   label: string;
@@ -35,7 +35,7 @@ export function AppButton({
         styles.button,
         compact && styles.compact,
         styles[variant],
-        pressed && styles.pressed,
+        pressed && pressedStyles[variant],
         isDisabled && styles.disabled,
       ]}>
       <ThemedText style={[styles.text, textStyles[variant]]}>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import type { CreateRideInput } from '@/core/domain/rides/ride.types';
 import { createRide as createRideService, RideRuleError } from '@/core/services/rides/ride-management.service';
@@ -8,6 +8,7 @@ export function useCreateRide() {
   const { currentUser, currentVehicle } = useAppState();
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isSavingRef = useRef(false);
 
   async function createRide(input: CreateRideInput) {
     if (!currentUser) {
@@ -20,7 +21,9 @@ export function useCreateRide() {
       return null;
     }
 
-    if (isSaving) return null;
+    // Trava síncrona contra duplo toque (o estado `isSaving` só muda no próximo render).
+    if (isSavingRef.current) return null;
+    isSavingRef.current = true;
 
     setIsSaving(true);
     setError(null);
@@ -37,6 +40,7 @@ export function useCreateRide() {
       setError(createError instanceof RideRuleError ? createError.message : 'Não foi possível criar a carona.');
       return null;
     } finally {
+      isSavingRef.current = false;
       setIsSaving(false);
     }
   }

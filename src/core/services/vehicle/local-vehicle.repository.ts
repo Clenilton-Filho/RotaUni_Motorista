@@ -19,6 +19,14 @@ export class LocalVehicleRepository implements VehicleRepository {
     ]);
   }
 
+  async deleteByUserId(userId: string): Promise<void> {
+    const vehicles = await this.getVehicles();
+    await asyncStorageAdapter.set(
+      StorageKeys.vehicles,
+      vehicles.filter((vehicle) => vehicle.userId !== userId),
+    );
+  }
+
   clearAll(): Promise<void> {
     return asyncStorageAdapter.remove(StorageKeys.vehicles);
   }

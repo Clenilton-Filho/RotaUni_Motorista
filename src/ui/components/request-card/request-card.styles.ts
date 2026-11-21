@@ -1,14 +1,33 @@
 import { StyleSheet } from 'react-native';
 
-import { Palette } from '@/ui/theme/theme';
+import { colors, radius, spacing, ui } from '@/ui/theme/theme';
 
 export const styles = StyleSheet.create({
-  card: { gap: 12, padding: 16, borderRadius: 10 },
-  header: { flexDirection: 'row', justifyContent: 'space-between', gap: 12 },
+  card: { ...ui.card, gap: spacing.md, marginBottom: 0 },
+  header: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: radius.pill,
+    backgroundColor: colors.primarySoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarText: { color: colors.primary, fontWeight: '700' },
   info: { flex: 1, gap: 2 },
-  rating: { color: Palette.star, fontWeight: '700' },
-  actions: { flexDirection: 'row', gap: 10 },
+  rating: {
+    ...ui.badge,
+    backgroundColor: colors.warningSoft,
+    color: colors.star,
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: '700',
+    overflow: 'hidden',
+  },
+  actions: { flexDirection: 'row', gap: spacing.sm },
   action: { flex: 1 },
-  accepted: { color: Palette.success, fontWeight: '700' },
-  rejected: { color: Palette.danger, fontWeight: '700' },
+  status: { ...ui.badge, ...ui.badgeText, overflow: 'hidden', color: colors.textMuted, backgroundColor: colors.background },
+  accepted: { color: colors.success, backgroundColor: colors.successSoft },
+  rejected: { color: colors.danger, backgroundColor: colors.dangerSoft },
+  pending: { color: colors.star, backgroundColor: colors.warningSoft },
 });

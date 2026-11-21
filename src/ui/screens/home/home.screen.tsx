@@ -31,16 +31,12 @@ export default function HomeScreen() {
   return (
     <Screen>
       <View style={styles.header}>
-        <ThemedText type="subtitle">Olá, {currentUser.name}!</ThemedText>
-        <ThemedText themeColor="textSecondary">Suas caronas saem de:</ThemedText>
-        <ThemedText type="smallBold">{currentUser.campus}</ThemedText>
+        <ThemedText style={styles.headerTitle}>Olá, {currentUser.name}!</ThemedText>
+        <ThemedText style={styles.headerSubtitle}>Suas caronas saem de:</ThemedText>
+        <ThemedText style={styles.campus}>{currentUser.campus}</ThemedText>
         <View style={styles.headerActions}>
-          <Pressable onPress={() => router.push('/perfil')}>
-            <ThemedText type="linkPrimary">Perfil</ThemedText>
-          </Pressable>
-          <Pressable onPress={() => router.push('/historico')}>
-            <ThemedText type="linkPrimary">Histórico</ThemedText>
-          </Pressable>
+          <HeaderLink label="Perfil" onPress={() => router.push('/perfil')} />
+          <HeaderLink label="Histórico" onPress={() => router.push('/historico')} />
         </View>
       </View>
 
@@ -59,7 +55,7 @@ export default function HomeScreen() {
         </ThemedView>
       )}
 
-      <ThemedText type="subtitle" style={styles.sectionTitle}>
+      <ThemedText style={styles.sectionTitle}>
         Minhas caronas
       </ThemedText>
 
@@ -71,9 +67,11 @@ export default function HomeScreen() {
       ) : error ? (
         <ThemedText style={styles.error}>{error}</ThemedText>
       ) : activeRides.length === 0 ? (
-        <ThemedText themeColor="textSecondary">
-          Você não tem caronas agendadas. Que tal oferecer uma agora?
-        </ThemedText>
+        <View style={styles.empty}>
+          <ThemedText style={styles.emptyText}>
+            Você não tem caronas agendadas. Que tal oferecer uma agora?
+          </ThemedText>
+        </View>
       ) : (
         <View style={styles.ridesList}>
           {activeRides.map((ride) => (
@@ -94,15 +92,24 @@ export default function HomeScreen() {
   );
 }
 
+function HeaderLink({ label, onPress }: { label: string; onPress: () => void }) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      onPress={onPress}
+      style={({ pressed }) => [styles.headerLink, pressed && styles.headerLinkPressed]}>
+      <ThemedText style={styles.headerLinkText}>{label}</ThemedText>
+    </Pressable>
+  );
+}
+
 function StatTile({ label, value }: { label: string; value: string }) {
   return (
     <ThemedView type="backgroundElement" style={styles.statTile}>
-      <ThemedText type="smallBold" style={styles.statValue}>
+      <ThemedText style={styles.statValue} numberOfLines={1} adjustsFontSizeToFit>
         {value}
       </ThemedText>
-      <ThemedText type="small" themeColor="textSecondary">
-        {label}
-      </ThemedText>
+      <ThemedText style={styles.statLabel}>{label}</ThemedText>
     </ThemedView>
   );
 }

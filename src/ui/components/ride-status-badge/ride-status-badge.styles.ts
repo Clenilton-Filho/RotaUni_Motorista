@@ -1,14 +1,15 @@
 import { StyleSheet } from 'react-native';
 
+import { colors, ui } from '@/ui/theme/theme';
+
 export const styles = StyleSheet.create({
-  badge: {
-    fontSize: 12,
-    lineHeight: 16,
-    fontWeight: '700',
-    borderWidth: 1,
-    borderRadius: 999,
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    overflow: 'hidden',
-  },
+  badge: { ...ui.badge, ...ui.badgeText, overflow: 'hidden' },
+});
+
+// Uma cor por status: texto forte em cima do fundo clarinho da mesma cor.
+export const statusStyles = StyleSheet.create({
+  scheduled: { color: colors.primary, backgroundColor: colors.primarySoft },
+  'in-progress': { color: colors.success, backgroundColor: colors.successSoft },
+  completed: { color: colors.textMuted, backgroundColor: colors.background },
+  cancelled: { color: colors.danger, backgroundColor: colors.dangerSoft },
 });

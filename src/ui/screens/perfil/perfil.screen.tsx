@@ -19,19 +19,23 @@ export default function ProfileScreen() {
   const { currentAccount, currentUser, currentVehicle, logout, resetLocalData } = useAppState();
   const [confirmation, setConfirmation] = useState<PendingConfirmation>(null);
   const [isBusy, setIsBusy] = useState(false);
+  const [error, setError] = useState('');
 
   if (!currentUser) return null;
 
+  // Não navega daqui: ao limpar a sessão, o guard de (app)/_layout leva para /boas-vindas.
+  // Navegar também aqui disputaria com esse redirecionamento.
   async function handleConfirm() {
     const pending = confirmation;
     setConfirmation(null);
     setIsBusy(true);
+    setError('');
 
     try {
       if (pending === 'logout') await logout();
-      if (pending === 'reset') await resetLocalData();
-      router.replace('/login');
-    } finally {
+      if (pending === 'reset' && __DEV__) await resetLocalData();
+    } catch {
+      setError(pending === 'logout' ? 'Não foi possível sair da conta.' : 'Não foi possível resetar os dados.');
       setIsBusy(false);
     }
   }
@@ -47,9 +51,7 @@ export default function ProfileScreen() {
         <InfoRow label="Email" value={currentAccount?.email ?? ''} />
       </ThemedView>
 
-      <ThemedText type="smallBold" style={styles.sectionTitle}>
-        Veículo
-      </ThemedText>
+      <ThemedText style={styles.sectionTitle}>Veículo</ThemedText>
       <ThemedView type="backgroundElement" style={styles.card}>
         {currentVehicle ? (
           <>
@@ -76,18 +78,23 @@ export default function ProfileScreen() {
         onPress={() => setConfirmation('logout')}
       />
 
-      <ThemedView type="backgroundElement" style={styles.developmentSection}>
-        <ThemedText style={styles.developmentTitle}>Desenvolvimento</ThemedText>
-        <ThemedText themeColor="textSecondary">
-          Ferramentas para limpar o estado local durante os testes.
-        </ThemedText>
-        <AppButton
-          variant="danger"
-          label="Resetar dados locais"
-          disabled={isBusy}
-          onPress={() => setConfirmation('reset')}
-        />
-      </ThemedView>
+      {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
+
+      {/* Só aparece em desenvolvimento: em produção o reset apagaria as contas de todos no aparelho. */}
+      {__DEV__ ? (
+        <ThemedView style={styles.developmentSection}>
+          <ThemedText style={styles.developmentTitle}>Desenvolvimento</ThemedText>
+          <ThemedText style={styles.developmentText}>
+            Ferramentas para limpar o estado local durante os testes.
+          </ThemedText>
+          <AppButton
+            variant="danger"
+            label="Resetar dados locais"
+            disabled={isBusy}
+            onPress={() => setConfirmation('reset')}
+          />
+        </ThemedView>
+      ) : null}
 
       <ConfirmDialog
         visible={confirmation === 'logout'}
