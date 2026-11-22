@@ -1,0 +1,8 @@
+export class ApiError extends Error { constructor(public status:number,message:string){super(message);this.name='ApiError';} }
+let activeUserId:string|null=null;
+export function setActiveUserId(userId:string|null){activeUserId=userId;}
+export function getActiveUserId(){return activeUserId;}
+export function getApiBaseUrl(){const raw=process.env.EXPO_PUBLIC_API_BASE_URL||'http://localhost:8080/api/v1';return raw.replace(/\/+$/,'').replace(/\/api\/v1$/,'')+'/api/v1';}
+type RequestOptions={userId?:string|null};
+async function request<T>(method:string,path:string,body?:unknown,options?:RequestOptions):Promise<T>{const userId=options?.userId??activeUserId;const url=`${getApiBaseUrl()}${path.startsWith('/')?path:`/${path}`}`;const headers:Record<string,string>={'Content-Type':'application/json'};if(userId)headers['X-User-Id']=userId;console.info(`[RotaUni Motorista] ${method} ${url}`);try{const response=await fetch(url,{method,headers,body:body===undefined?undefined:JSON.stringify(body)});const text=await response.text();let data:unknown=null;try{data=text?JSON.parse(text):null;}catch{}console.info(`[RotaUni Motorista] ${method} ${url} -> ${response.status}`,data);if(!response.ok)throw new ApiError(response.status,(data as {message?:string})?.message||`HTTP ${response.status}`);return data as T;}catch(error){console.error(`[RotaUni Motorista] ${method} ${url} erro`,error);throw error;}}
+export const apiClient={get:<T>(path:string,o?:RequestOptions)=>request<T>('GET',path,undefined,o),post:<T>(path:string,b?:unknown,o?:RequestOptions)=>request<T>('POST',path,b,o),put:<T>(path:string,b?:unknown,o?:RequestOptions)=>request<T>('PUT',path,b,o),delete:<T>(path:string,o?:RequestOptions)=>request<T>('DELETE',path,undefined,o)};
