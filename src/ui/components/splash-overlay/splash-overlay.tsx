@@ -5,6 +5,7 @@ import { View } from 'react-native';
 import Animated, { Easing, Keyframe } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
+import { radius } from '@/ui/theme/theme';
 import { styles } from './splash-overlay.styles';
 
 const DURATION = 600;
@@ -26,7 +27,12 @@ export function SplashOverlay() {
   if (!visible) return null;
 
   const image = (
-    <Image contentFit="contain" style={styles.image} source={require('@/assets/images/splash-icon.png')} />
+    <Image
+      contentFit="contain"
+      resizeMode="contain"
+      style={[styles.image, { aspectRatio: 1, borderRadius: radius.lg }]}
+      source={require('@/assets/images/icon.png')}
+    />
   );
 
   return animate ? (

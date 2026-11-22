@@ -9,7 +9,14 @@
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://rotauni-api.onrender.com",
+        "EXPO_PUBLIC_ENABLE_TEST_DATA": "true"
+      }
     },
     "production": {
       "autoIncrement": true

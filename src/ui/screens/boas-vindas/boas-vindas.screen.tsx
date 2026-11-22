@@ -7,6 +7,7 @@ import { Screen } from '@/ui/components/screen/screen';
 import { ThemedText } from '@/ui/components/themed-text/themed-text';
 import { ThemedView } from '@/ui/components/themed-view/themed-view';
 import { useAppState } from '@/core/state/app-provider';
+import { radius } from '@/ui/theme/theme';
 
 import { styles } from './boas-vindas.styles';
 
@@ -22,13 +23,12 @@ export default function BoasVindasScreen() {
     <Screen>
       <View style={styles.content}>
         <View style={styles.hero}>
-          <View style={styles.logoCircle}>
-            <Image
-              source={require('@/assets/images/splash-icon.png')}
-              style={styles.logo}
-              contentFit="contain"
-            />
-          </View>
+          <Image
+            source={require('@/assets/images/icon.png')}
+            style={[styles.logo, { aspectRatio: 1, borderRadius: radius.md }]}
+            contentFit="contain"
+            resizeMode="contain"
+          />
           <ThemedText style={styles.brand}>RotaUni Motorista</ThemedText>
           <ThemedText type="subtitle" style={styles.title}>
             Seu caminho pode levar alguém
