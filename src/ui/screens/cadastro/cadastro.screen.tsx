@@ -84,7 +84,7 @@ export default function CadastroScreen() {
         </ThemedText>
       </View>
 
-      {__DEV__ ? (
+      {process.env.EXPO_PUBLIC_ENABLE_TEST_DATA !== 'false' ? (
         <AppButton compact variant="outline" label="Preencher com dados de teste" onPress={fillWithTestData} />
       ) : null}
 
